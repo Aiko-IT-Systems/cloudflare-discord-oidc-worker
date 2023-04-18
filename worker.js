@@ -49,14 +49,14 @@ app.get('/authorize/:scopemode', async (c) => {
 	let scopes = '';
 	
 	switch(c.req.param('scopemode')) {
-		case 'email':
-			scopes = 'identify email'
+		case 'identify':
+			scopes = 'identify'
 			break;
 		case 'guilds':
-			scopes = 'identify email guilds'
+			scopes = 'identify guilds'
 			break;
 		case 'roles':
-			scopes = 'identify email guilds guilds.members.read'
+			scopes = 'identify guilds guilds.members.read'
 			break;
 		default:
 			return c.text('Bad request.', 400)
@@ -104,8 +104,6 @@ app.post('/token', async (c) => {
 			'User-Agent': 'DiscordBot (https://github.com/Erisa/discord-oidc-worker, 1.0.0)'
 		}
 	}).then(res => res.json())
-
-	if (!userInfo['verified']) return c.text('Bad request.', 400)
 
 	let servers = []
 
@@ -181,7 +179,7 @@ app.post('/token', async (c) => {
 		preferred_username: `${userInfo['username']}#${userInfo['discriminator']}`,
 		...userInfo,
 		...roleClaims,
-		email: userInfo['email'],
+		email: 'oauth@discord.com',
 		guilds: servers
 	})
 		.setProtectedHeader({ alg: 'RS256' })
