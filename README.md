@@ -6,7 +6,7 @@ Process flow was inspired by [kimcore/discord-oidc](https://github.com/kimcore/d
 
 Some ideas were also taken from [eidam/cf-access-workers-oidc](https://github.com/eidam/cf-access-workers-oidc).
 
-Show them some love!
+Original code from [Erisa](https://github.com/Erisa/discord-oidc-worker) modified to work with role checks.
 
 ## Setup
 
