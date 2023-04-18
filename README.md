@@ -6,7 +6,12 @@ Process flow was inspired by [kimcore/discord-oidc](https://github.com/kimcore/d
 
 Some ideas were also taken from [eidam/cf-access-workers-oidc](https://github.com/eidam/cf-access-workers-oidc).
 
+## Important Notice
+
 Original code from [Erisa](https://github.com/Erisa/discord-oidc-worker) modified to work with role checks.
+Repo is distributed seperate because the pr wasn't accepted.
+Some users depend on that and we use it heavily internally.
+Please consider [sponsoring Erisa](https://github.com/sponsors/Erisa) as well.
 
 ## Setup
 
