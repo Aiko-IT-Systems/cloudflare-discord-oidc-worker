@@ -133,7 +133,3 @@ With roles:
 
 This example would allow me to access the application if I was myself on Discord or if I was a member of a specific server:
 ![](https://up.erisa.uk/firefox_1w0BXtk80X.png)
-
-## Security
-
-If you find a security vulnerability in this repository, do NOT create an Issue or Pull Request. Please contact me through email or message (There are links on my GitHub profile). If you create an issue for an active security vulnerability I will save the information and delete the issue.

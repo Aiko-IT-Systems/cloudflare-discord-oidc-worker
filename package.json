@@ -1,13 +1,42 @@
 {
   "name": "discord-oidc-worker",
-  "version": "1.0.0",
-  "description": "Discord OIDC Wrapper in CF Workers",
+  "version": "2.0.0",
+  "description": "Discord OIDC Wrapper in CF Workers with roles support",
   "main": "worker.js",
   "scripts": {
     "start": "wrangler dev"
   },
   "author": "Erisa A <erisa@erisa.uk>",
+  "contributors": [
+    {
+      "name" : "Lala Sabathil",
+      "email" : "aiko@aitsys.dev",
+      "url" : "https://github.com/Lulalaby"
+    }
+  ],
+  "bugs": {
+    "email": "support@aitsys.dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Aiko-IT-Systems/cloudflare-discord-oidc-worker.git"
+  },
+  "homepage": "https://github.com/Aiko-IT-Systems/cloudflare-discord-oidc-worker#readme",
   "license": "MIT",
+  "funding": [
+    {
+      "type" : "github",
+      "url" : "https://github.com/sponsors/Erisa"
+    },
+    {
+      "type" : "github",
+      "url" : "https://github.com/sponsors/Aiko-IT-Systems"
+    },
+    {
+      "type" : "patreon",
+      "url" : "https://www.patreon.com/aiko_it_systems"
+    }
+  ],
   "dependencies": {
     "hono": "^2.6.2",
     "jose": "^4.11.1",

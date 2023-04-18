@@ -90,7 +90,7 @@ app.post('/token', async (c) => {
 		body: params,
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded',
-			'User-Agent': 'DiscordBot (https://github.com/Erisa/discord-oidc-worker, v1.0.0)'
+			'User-Agent': 'DiscordBot (https://github.com/Aiko-IT-Systems/cloudflare-discord-oidc-worker, v2.0.0)'
 		}
 	}).then(res => res.json())
 	
@@ -101,7 +101,7 @@ app.post('/token', async (c) => {
 	const userInfo = await fetch('https://discord.com/api/users/@me', {
 		headers: {
 			'Authorization': 'Bearer ' + r['access_token'],
-			'User-Agent': 'DiscordBot (https://github.com/Erisa/discord-oidc-worker, 1.0.0)'
+			'User-Agent': 'DiscordBot (https://github.com/Aiko-IT-Systems/cloudflare-discord-oidc-worker, v2.0.0)'
 		}
 	}).then(res => res.json())
 
@@ -113,7 +113,7 @@ app.post('/token', async (c) => {
 		const serverResp = await fetch('https://discord.com/api/users/@me/guilds', {
 			headers: {
 				'Authorization': 'Bearer ' + r['access_token'],
-				'User-Agent': 'DiscordBot (https://github.com/Erisa/discord-oidc-worker, v1.0.0)'
+				'User-Agent': 'DiscordBot (https://github.com/Aiko-IT-Systems/cloudflare-discord-oidc-worker, v2.0.0)'
 			}
 		})
 	
@@ -144,7 +144,7 @@ app.post('/token', async (c) => {
 					let memberPromise = fetch(`https://discord.com/api/users/@me/guilds/${guildId}/member`, {
 						headers: {
 							'Authorization': 'Bearer ' + r['access_token'],
-							'User-Agent': 'DiscordBot (https://github.com/Erisa/discord-oidc-worker, v1.0.0)'
+							'User-Agent': 'DiscordBot (https://github.com/Aiko-IT-Systems/cloudflare-discord-oidc-worker, v2.0.0)'
 						}
 					})
 					
@@ -162,7 +162,7 @@ app.post('/token', async (c) => {
 					let memberPromise = fetch(`https://discord.com/api/guilds/${guildId}/members/${userInfo['id']}`, {
 						headers: {
 							'Authorization': 'Bot ' + c.env.DISCORD_TOKEN,
-							'User-Agent': 'DiscordBot (https://github.com/Erisa/discord-oidc-worker, v1.0.0)'
+							'User-Agent': 'DiscordBot (https://github.com/Aiko-IT-Systems/cloudflare-discord-oidc-worker, v2.0.0)'
 						}
 					})
 					
@@ -234,7 +234,7 @@ async function cacheRoles(event, env) {
 				}).toString(), {
 					headers: {
 						'Authorization': 'Bot ' + env.DISCORD_TOKEN,
-						'User-Agent': 'DiscordBot (https://github.com/Erisa/discord-oidc-worker, v1.0.0)'
+						'User-Agent': 'DiscordBot (https://github.com/Aiko-IT-Systems/cloudflare-discord-oidc-worker, v2.0.0)'
 					}
 				})
 				let incrMemberResp = await incrMemberPromise
