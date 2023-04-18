@@ -35,7 +35,7 @@ Steps:
     - Name: Whatever you want, e.g. `Discord`
     - App ID: Your Discord application ID.
     - Client secret: Your Discord application OAuth2 secret.
-    - Auth URL: `https://discord-oidc.YOURNAME.workers.dev/authorize/email` or swap out `/identify` for `/guilds` to include the Guilds scope.
+    - Auth URL: `https://discord-oidc.YOURNAME.workers.dev/authorize/identify` or swap out `/identify` for `/guilds` to include the Guilds scope.
     - Token URL:  `https://discord-oidc.YOURNAME.workers.dev/token`
     - Certificate URL: `https://discord-oidc.YOURNAME.workers.dev/jwks.json`
     - Proof Key for Code Exchange (PKCE): Enabled
