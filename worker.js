@@ -42,7 +42,7 @@ app.get('/authorize/:scopemode', async (c) => {
 
 	if (c.req.query('client_id') !== config.clientId
 		|| c.req.query('redirect_uri') !== config.redirectURL
-		|| !['guilds', 'email', 'roles'].includes(c.req.param('scopemode'))) {
+		|| !['guilds', 'identify', 'roles'].includes(c.req.param('scopemode'))) {
 		return c.text('Bad request.', 400)
 	}
 
@@ -176,7 +176,7 @@ app.post('/token', async (c) => {
 	const idToken = await new jose.SignJWT({
 		iss: 'https://cloudflare.com',
 		aud: config.clientId,
-		preferred_username: `${userInfo['username']}#${userInfo['discriminator']}`,
+		preferred_username: userInfo['username'],
 		...userInfo,
 		...roleClaims,
 		email: 'oauth@discord.com',
