@@ -42,12 +42,12 @@ Steps:
     - Name: Whatever you want, e.g. `Discord`
     - App ID: Your Discord application ID.
     - Client secret: Your Discord application OAuth2 secret.
-    - Auth URL: `https://discord-oidc.YOURNAME.workers.dev/authorize/identify` or swap out `/identify` for `/guilds` to include the Guilds scope.
+    - Auth URL: `https://discord-oidc.YOURNAME.workers.dev/authorize/email` or swap out `/email` for `/guilds` to include the Guilds scope.
     - Token URL:  `https://discord-oidc.YOURNAME.workers.dev/token`
     - Certificate URL: `https://discord-oidc.YOURNAME.workers.dev/jwks.json`
     - Proof Key for Code Exchange (PKCE): Enabled
     - OIDC Claims:
-        - Email is included automatically as oauth@discord.com without being set here.
+        - Email is included automatically without being set here.
         - `preferred_username` will map to the users name + discrim e.g. `Erisa#9999`
         - If the Auth URL is `/guilds` then the `guilds` claim can be used to provide a list of guild IDs.
         - Anything else from here will work: https://discord.com/developers/docs/resources/user#user-object-user-structure
