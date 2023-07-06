@@ -32,7 +32,7 @@ Steps:
 - Copy `config.sample.json` to `config.json`.
 - Add your Discord application ID and OAuth2 secret to `config.json`.
 - Edit your Cloudflare Access subdomain into `config.json` under `redirectURL`. This should be the same URL you added to Discord.
-- Publish the Worker with `npx wrangler publish`!
+- Publish the Worker with `npx wrangler deploy`!
 
 ## Usage
 
@@ -49,7 +49,7 @@ Steps:
     - OIDC Claims:
         - Email is included automatically without being set here.
         - If the Auth URL is `/guilds` then the `guilds` claim can be used to provide a list of guild IDs.
-        - Anything else from here will work: https://discord.com/developers/docs/resources/user#user-object-user-structure
+        - Anything else from here will work: https://discord.dev/resources/user#user-object-user-structure
 - See the Examples section below for help with constructing policies.
 
 ## Usage with roles (Bot required)
