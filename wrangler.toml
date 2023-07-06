@@ -1,6 +1,6 @@
 name = "discord-oidc"
 main = "worker.js"
-compatibility_date = "2022-12-24"
+compatibility_date = "2023-07-01"
 
 kv_namespaces = [
   { binding = "KV", id = "107e83c8df164c02ba47508d8f87782c", preview_id = "bed69584a4b944b6ba9e90ccdd280596" }
