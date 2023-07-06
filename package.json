@@ -9,9 +9,9 @@
   "author": "Erisa A <erisa@erisa.uk>",
   "contributors": [
     {
-      "name" : "Lala Sabathil",
-      "email" : "aiko@aitsys.dev",
-      "url" : "https://github.com/Lulalaby"
+      "name": "Lala Sabathil",
+      "email": "aiko@aitsys.dev",
+      "url": "https://github.com/Lulalaby"
     }
   ],
   "bugs": {
@@ -25,21 +25,21 @@
   "license": "MIT",
   "funding": [
     {
-      "type" : "github",
-      "url" : "https://github.com/sponsors/Erisa"
+      "type": "github",
+      "url": "https://github.com/sponsors/Erisa"
     },
     {
-      "type" : "github",
-      "url" : "https://github.com/sponsors/Aiko-IT-Systems"
+      "type": "github",
+      "url": "https://github.com/sponsors/Aiko-IT-Systems"
     },
     {
-      "type" : "patreon",
-      "url" : "https://www.patreon.com/aiko_it_systems"
+      "type": "patreon",
+      "url": "https://www.patreon.com/aiko_it_systems"
     }
   ],
   "dependencies": {
-    "hono": "^3.0.0",
-    "jose": "^4.11.1",
-    "wrangler": "^3.0.0"
+    "hono": "^3.2.7",
+    "jose": "^4.14.4",
+    "wrangler": "^3.1.2"
   }
 }
