@@ -8,6 +8,3 @@ kv_namespaces = [
 
 [triggers]
 crons = ["0 */1 * * *"]
-
-[placement]
-mode = "smart"
