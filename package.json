@@ -39,7 +39,7 @@
   ],
   "dependencies": {
     "hono": "^3.2.7",
-    "jose": "^4.14.4",
+    "jose": "^5.0.0",
     "wrangler": "^3.1.2"
   }
 }
