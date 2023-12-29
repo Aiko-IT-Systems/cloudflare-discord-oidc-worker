@@ -1,6 +1,6 @@
 {
   "name": "discord-oidc-worker",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Discord OIDC Wrapper in CF Workers with roles support",
   "main": "worker.js",
   "scripts": {
@@ -38,8 +38,8 @@
     }
   ],
   "dependencies": {
-    "hono": "^3.2.7",
-    "jose": "^4.14.4",
-    "wrangler": "^3.1.2"
+    "hono": "3.11.11",
+    "jose": "5.2.0",
+    "wrangler": "3.22.1"
   }
 }
