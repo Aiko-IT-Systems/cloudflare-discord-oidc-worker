@@ -41,12 +41,16 @@ const app = new Hono()
 app.get('/authorize/:scopemode', async (c) => {
 
 	if (c.req.query('client_id') !== config.clientId
-		|| c.req.query('redirect_uri') !== config.redirectURL
+		|| c.req.query('redirect_uri') == undefined
+		|| c.req.query('redirect_uri') == ''
+		|| !config.redirectUrls.includes(c.req.query('redirect_uri') ?? "wrong")
 		|| !['guilds', 'email', 'roles'].includes(c.req.param('scopemode'))) {
 		return c.text('Bad request.', 400)
 	}
 
 	let scopes = '';
+
+	let redirectUri = c.req.query('redirect_uri').toString()
 	
 	switch(c.req.param('scopemode')) {
 		case 'email':
@@ -64,10 +68,10 @@ app.get('/authorize/:scopemode', async (c) => {
 
 	const params = new URLSearchParams({
 		'client_id': config.clientId,
-		'redirect_uri': config.redirectURL,
+		'redirect_uri': redirectUri,
 		'response_type': 'code',
 		'scope': scopes,
-		'state': c.req.query('state'),
+		'state': c.req.query('state').toString(),
 		'prompt': 'none'
 	}).toString()
 
@@ -76,11 +80,12 @@ app.get('/authorize/:scopemode', async (c) => {
 
 app.post('/token', async (c) => {
 	const body = await c.req.parseBody()
-	const code = body['code']
+	const code = body['code'].toString()
+	const redirectUri = body['redirect_uri'].toString()
 	const params = new URLSearchParams({
 		'client_id': config.clientId,
 		'client_secret': config.clientSecret,
-		'redirect_uri': config.redirectURL,
+		'redirect_uri': redirectUri,
 		'code': code,
 		'grant_type': 'authorization_code'
 	}).toString()
@@ -240,11 +245,24 @@ async function cacheRoles(event, env) {
 				// That might work as a minified ratelimit handler
 				if (incrMemberResp.status != 200) {
 					// wait 10 seconds and try again
+					console.log("Possible ratelimit hit, waiting 10 seconds")
 					await new Promise(resolve => setTimeout(resolve, 10000))
 					incrMemberResp = await incrMemberPromise
 				}
 
+				if (incrMemberResp.status != 200) {
+					console.log("Can not continue, execution time limit hit")
+					throw new Error("Execution time limit hit")
+				}
+
+				if (incrMemberResp.status != 200) {
+					// abort
+					console.log("Ratelimit hit, aborting")
+					break;
+				}
+
 				const incrMemberJson = await incrMemberResp.json()
+				console.log("Got " + incrMemberJson.length + " members for " + guildId)
 				recd = incrMemberJson.length
 				if (recd == 0) {
 					last = 0

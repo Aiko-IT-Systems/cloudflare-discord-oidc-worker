@@ -31,7 +31,7 @@ Steps:
 - Edit `wrangler.toml` to use your new KV namespace ID.
 - Copy `config.sample.json` to `config.json`.
 - Add your Discord application ID and OAuth2 secret to `config.json`.
-- Edit your Cloudflare Access subdomain into `config.json` under `redirectURL`. This should be the same URL you added to Discord.
+- Edit your Cloudflare Access subdomain into `config.json` under `redirectUrls`. This should be the same URL you added to Discord.
 - Publish the Worker with `npx wrangler deploy`!
 
 ## Usage
@@ -68,7 +68,9 @@ Example config for a roles setup:
 {
     "clientId": "1056005449054429204",
     "clientSecret": "aaaaaaaaaaaaa",
-    "redirectURL": "https://erisa.cloudflareaccess.com/cdn-cgi/access/callback",
+    "redirectUrls": [
+        "https://erisa.cloudflareaccess.com/cdn-cgi/access/callback"
+    ],
     "serversToCheckRolesFor": [
         "438781053675634713"
     ],
@@ -89,7 +91,9 @@ Example config for a roles setup:
 {
     "clientId": "1056005449054429204",
     "clientSecret": "aaaaaaaaaaaaa",
-    "redirectURL": "https://erisa.cloudflareaccess.com/cdn-cgi/access/callback",
+    "redirectUrls": [
+        "https://erisa.cloudflareaccess.com/cdn-cgi/access/callback"
+    ],
     "serversToCheckRolesFor": [
         "438781053675634713"
     ],
@@ -112,7 +116,9 @@ Example config for a roles setup:
 {
     "clientId": "1056005449054429204",
     "clientSecret": "aaaaaaaaaaaaa",
-    "redirectURL": "https://erisa.cloudflareaccess.com/cdn-cgi/access/callback",
+    "redirectUrls": [
+        "https://erisa.cloudflareaccess.com/cdn-cgi/access/callback"
+    ],
     "serversToCheckRolesFor": [
         "438781053675634713"
     ],
