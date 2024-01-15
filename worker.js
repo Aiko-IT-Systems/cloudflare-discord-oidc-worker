@@ -99,7 +99,11 @@ app.post('/token', async (c) => {
 		}
 	}).then(res => res.json())
 	
-	if (r === null) return new Response("Bad request.", { status: 400 })
+	if (r === null) 
+	{
+		console.error("Discord returned null?!")
+		return new Response("Bad request.", { status: 400 })
+	}
 
 	const returned_scope = r['scope'].split(' ')
 	
@@ -110,7 +114,11 @@ app.post('/token', async (c) => {
 		}
 	}).then(res => res.json())
 
-	if (!userInfo['verified']) return c.text('Bad request.', 400)
+	if (!userInfo['verified'])
+	{
+		console.error("User is not verified")
+		return c.text('Bad request.', 400)
+	}
 
 	let servers = []
 
