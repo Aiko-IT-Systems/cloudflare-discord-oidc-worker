@@ -38,7 +38,7 @@
     }
   ],
   "dependencies": {
-    "hono": "4.2.9",
+    "hono": "4.3.3",
     "jose": "5.2.4",
     "wrangler": "3.53.1"
   }
