@@ -38,8 +38,8 @@
     }
   ],
   "dependencies": {
-    "hono": "4.6.5",
-    "jose": "5.9.4",
-    "wrangler": "3.81.0"
+    "hono": "4.6.7",
+    "jose": "5.9.6",
+    "wrangler": "3.83.0"
   }
 }
