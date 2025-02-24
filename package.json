@@ -40,6 +40,6 @@
   "dependencies": {
     "hono": "4.7.2",
     "jose": "6.0.6",
-    "wrangler": "3.109.2"
+    "wrangler": "3.109.3"
   }
 }
