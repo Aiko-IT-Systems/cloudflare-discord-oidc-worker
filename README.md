@@ -1,142 +1,253 @@
-# Discord OIDC Provider for Cloudflare Access
+# Discord OIDC Worker for Cloudflare Access
 
-Simply put: Allows you to authorize with Cloudflare Access using your Discord account via a Cloudflare Worker. Wraps OIDC around the Discord OAuth2 API to achieve this, storing signing keys in KV. 
+This project lets you use Discord as an OpenID Connect provider for Cloudflare Access by wrapping Discord OAuth2 inside a Cloudflare Worker.
 
-Process flow was inspired by [kimcore/discord-oidc](https://github.com/kimcore/discord-oidc) but rewritten entirely for [Cloudflare Workers](https://workers.cloudflare.com/) and [Hono](https://honojs.dev/).
+It was originally created by [Erisa](https://github.com/Erisa/discord-oidc-worker). This fork extends the idea with role support, cached role lookups, and a configurable email mode while keeping the original worker's goal intact. If this project helps you, please also consider supporting [Erisa](https://github.com/sponsors/Erisa).
 
-Some ideas were also taken from [eidam/cf-access-workers-oidc](https://github.com/eidam/cf-access-workers-oidc).
+## What It Does
 
-## Important Notice
+The worker sits between Cloudflare Access and Discord:
 
-Original code from [Erisa](https://github.com/Erisa/discord-oidc-worker) modified to work with role checks.
+1. Cloudflare Access sends the user to this worker's `/authorize/...` endpoint.
+2. The worker redirects the user to Discord OAuth2 with the right scopes.
+3. Discord sends the authorization code back to Cloudflare Access.
+4. Cloudflare Access calls this worker's `/token` endpoint.
+5. The worker exchanges the code, fetches Discord user data, optionally fetches guilds and roles, then signs an `id_token`.
+6. Cloudflare Access uses that token and the published JWK set from `/jwks.json`.
 
-Repo is distributed seperate because the pr wasn't accepted.
-Some users depend on that and we use it heavily internally.
+Signing keys are generated once and stored in Workers KV.
 
-Please consider [sponsoring Erisa](https://github.com/sponsors/Erisa) as well.
+## Features
+
+- TypeScript-based Cloudflare Worker
+- Hono routing
+- Discord OAuth2 to OIDC bridge for Cloudflare Access
+- Optional `guilds` claim
+- Optional per-guild `roles:<guild_id>` claims
+- Hourly cached role lookups through KV
+- Toggleable email behavior for environments where real Discord email claims are not wanted
+
+## Endpoints
+
+- `/authorize/identify`
+- `/authorize/email`
+- `/authorize/guilds`
+- `/authorize/roles`
+- `/token`
+- `/jwks.json`
+
+The `/authorize/...` endpoints expect:
+
+- `client_id`
+- `redirect_uri`
+- optional `state`
+
+The `client_id` must match the configured Discord application id, and the `redirect_uri` must be present in `config.json`.
+
+## Email Modes
+
+This fork supports two email modes through `config.json`:
+
+- `includeEmail: true`
+  The worker requests Discord's `email` scope, requires a verified Discord account, and emits the real Discord email in the ID token.
+- `includeEmail: false`
+  The worker does not request the `email` scope, skips the verified-email requirement, and emits `fallbackEmail` instead.
+
+This is useful because Cloudflare Access expects an email-like identity, but not every setup wants to depend on Discord email access.
+
+## Claims
+
+Depending on the chosen authorize route and config, the worker can emit:
+
+- `email`
+- `guilds`
+- `roles:<guild_id>`
+- most Discord user fields returned from `/users/@me`
+
+## Configuration
+
+Copy `config.sample.json` to `config.json` and fill it in.
+
+Example:
+
+```json
+{
+  "clientId": "00000000000000",
+  "clientSecret": "AAAAAAAAAAAAAAAAAAA",
+  "redirectUrls": [
+    "https://YOURNAME.cloudflareaccess.com/cdn-cgi/access/callback"
+  ],
+  "includeEmail": true,
+  "fallbackEmail": "oauth@discord.com",
+  "serversToCheckRolesFor": [
+    "123456789012345678"
+  ],
+  "cacheRoles": false
+}
+```
+
+### Config Fields
+
+- `clientId`
+  Your Discord application client id.
+- `clientSecret`
+  Your Discord application client secret.
+- `redirectUrls`
+  Allowed redirect URLs. These must match what you configured in Discord and what Cloudflare Access will use.
+- `includeEmail`
+  Whether to request and expose the real Discord email claim.
+- `fallbackEmail`
+  Email claim used when `includeEmail` is `false`.
+- `serversToCheckRolesFor`
+  Guild ids that should be evaluated for role claims.
+- `cacheRoles`
+  Whether to use the scheduled KV-backed role cache.
 
 ## Setup
 
-Requirements:
-- A Cloudflare Access account - make sure you've gone through the onboarding flow and have a `NAME.cloudflareaccess.com` subddomain.
-- A [Discord developer application](https://discord.com/developers/applications) to use for OAuth2.
-    - Add a redirect URI `https://YOURNAME.cloudflareaccess.com/cdn-cgi/access/callback` to the Discord application.
-- NodeJS
+### 1. Requirements
 
-Steps:
-- Clone the repository.
-- Install dependencies: `npm install`
-- Install npx if you don't have it: `npm install -g npx`
-- Create a KV namespace on Cloudflare [here](https://dash.cloudflare.com/?to=/:account/workers/kv/namespaces).
-- Edit `wrangler.toml` to use your new KV namespace ID.
-- Copy `config.sample.json` to `config.json`.
-- Add your Discord application ID and OAuth2 secret to `config.json`.
-- Edit your Cloudflare Access subdomain into `config.json` under `redirectUrls`. This should be the same URL you added to Discord.
-- Publish the Worker with `npx wrangler deploy`!
+- A Cloudflare account with Access / Zero Trust enabled
+- A Discord application for OAuth2
+- Node.js
+- A Workers KV namespace
 
-## Usage
+### 2. Install
 
-- Go to the [Cloudflare Zero Trust dashboard](https://one.dash.cloudflare.com)
-- Navigate to Settings > Authentication, select "Add new" under Login methods, select OpenID Connect.
-- Fill the following fields:
-    - Name: Whatever you want, e.g. `Discord`
-    - App ID: Your Discord application ID.
-    - Client secret: Your Discord application OAuth2 secret.
-    - Auth URL: `https://discord-oidc.YOURNAME.workers.dev/authorize/email` or swap out `/email` for `/guilds` to include the Guilds scope.
-    - Token URL:  `https://discord-oidc.YOURNAME.workers.dev/token`
-    - Certificate URL: `https://discord-oidc.YOURNAME.workers.dev/jwks.json`
-    - Proof Key for Code Exchange (PKCE): Enabled
-    - OIDC Claims:
-        - Email is included automatically without being set here.
-        - If the Auth URL is `/guilds` then the `guilds` claim can be used to provide a list of guild IDs.
-        - Anything else from here will work: https://discord.dev/resources/user#user-object-user-structure
-- See the Examples section below for help with constructing policies.
-
-## Usage with roles (Bot required)
-> :warning: This method can run into ratelimits pretty quickly if used by many users at the same time. It is recommended to use the [cached roles](#usage-with-cached-roles-bot-required-safer-method) method.
-
-- Follow the above setup, making sure to use the `/guilds` auth URL.
-- Create a Discord Bot for the OAuth2 application, generate an OAuth2 URL with the `bot` scope and use it to invite the bot to your server.
-    - The bot does not need any permissions, it just needs to exist in the server.
-- Generate a bot token and paste it into `npx wrangler secret put DISCORD_TOKEN`.
-- Populate `config.json` with a list of server IDs that you wish to check user roles for. **Make sure the bot is a member of all servers in this list**.
-- Edit the OIDC provider in Cloudflare Access and add the server IDs as claims prefixed with `roles:`, e.g. `roles:438781053675634713`
-- When creating a policy, reference the `roles:` claims as the name, and use the role ID as the claim value. This will match users in that server who have that role.
-
-Example config for a roles setup:
-```json
-{
-    "clientId": "1056005449054429204",
-    "clientSecret": "aaaaaaaaaaaaa",
-    "redirectUrls": [
-        "https://erisa.cloudflareaccess.com/cdn-cgi/access/callback"
-    ],
-    "serversToCheckRolesFor": [
-        "438781053675634713"
-    ],
-    "cacheRoles": false
-}
+```bash
+npm install
 ```
 
-## Usage with roles (Without bot)
-> :warning: This method relies on bearer tokens and runs into rate limits very quickly. It is not recommended to use this method unless you have a very small number of servers to check roles for.
+### 3. Configure Wrangler
 
-- Follow the above setup, making sure to use the `/roles` auth URL.
-- Populate `config.json` with a list of server IDs that you wish to check user roles for.
-- Edit the OIDC provider in Cloudflare Access and add the server IDs as claims prefixed with `roles:`, e.g. `roles:438781053675634713`
-- When creating a policy, reference the `roles:` claims as the name, and use the role ID as the claim value. This will match users in that server who have that role.
+Set the KV namespace in `wrangler.toml`.
 
-Example config for a roles setup:
-```json
-{
-    "clientId": "1056005449054429204",
-    "clientSecret": "aaaaaaaaaaaaa",
-    "redirectUrls": [
-        "https://erisa.cloudflareaccess.com/cdn-cgi/access/callback"
-    ],
-    "serversToCheckRolesFor": [
-        "438781053675634713"
-    ],
-    "cacheRoles": false
-}
+Example:
+
+```toml
+kv_namespaces = [
+  { binding = "KV", id = "YOUR_KV_ID" }
+]
 ```
 
-## Usage with cached roles (Bot required, safer method)
-- Follow the above setup, making sure to use the `/guilds` auth URL.
-- Create a Discord Bot for the OAuth2 application, generate an OAuth2 URL with the `bot` scope and use it to invite the bot to your server.
-    - The bot does not need any permissions, it just needs to exist in the server.
-- Generate a bot token and paste it into `npx wrangler secret put DISCORD_TOKEN`.
-- Populate `config.json` with a list of server IDs that you wish to check user roles for. **Make sure the bot is a member of all servers in this list**.
-- Edit the OIDC provider in Cloudflare Access and add the server IDs as claims prefixed with `roles:`, e.g. `roles:438781053675634713`
-- When creating a policy, reference the `roles:` claims as the name, and use the role ID as the claim value. This will match users in that server who have that role.
-- Set `cacheRoles` to `true` in `config.json`. This will cache the roles **every hour**, and will not check the API for roles until the cache expires.
+If you want bot-based role lookups, add the bot token as a Worker secret:
 
-Example config for a roles setup:
-```json
-{
-    "clientId": "1056005449054429204",
-    "clientSecret": "aaaaaaaaaaaaa",
-    "redirectUrls": [
-        "https://erisa.cloudflareaccess.com/cdn-cgi/access/callback"
-    ],
-    "serversToCheckRolesFor": [
-        "438781053675634713"
-    ],
-    "cacheRoles": true
-}
+```bash
+npx wrangler secret put DISCORD_TOKEN
 ```
 
-## Examples
-My setup, as an example:
+### 4. Configure Discord
 
-![](https://up.erisa.uk/firefox_5978jWH1ti.png)
-![](https://up.erisa.uk/firefox_9Hzgvt2FiP.png)
+Create a Discord application and add your Cloudflare Access callback URL as a redirect URI, for example:
 
-To use this in a policy, simply enable it as an Identity provider in your Access application and then create a rule using `OIDC Claims` and the relevant claim above. Make sure the claim has been added to your provider in the steps above.
+```txt
+https://YOURNAME.cloudflareaccess.com/cdn-cgi/access/callback
+```
 
-With roles:
+### 5. Configure Cloudflare Access
 
-![](https://up.erisa.uk/firefox_rfqxMIRj8t.png)
+In Cloudflare Zero Trust:
 
-This example would allow me to access the application if I was myself on Discord or if I was a member of a specific server:
-![](https://up.erisa.uk/firefox_1w0BXtk80X.png)
+1. Go to `Settings` -> `Authentication`
+2. Add a new login method
+3. Choose `OpenID Connect`
+4. Fill in:
+
+- `Auth URL`
+  `https://YOUR_WORKER_HOST/authorize/email`
+  or one of the other authorize modes
+- `Token URL`
+  `https://YOUR_WORKER_HOST/token`
+- `Certificate URL`
+  `https://YOUR_WORKER_HOST/jwks.json`
+- `App ID`
+  Your Discord client id
+- `Client secret`
+  Your Discord client secret
+- `PKCE`
+  Enabled
+
+If you want guild or role claims in Access policies, add those custom claims in the provider configuration.
+
+## Authorize Modes
+
+### `/authorize/identify`
+
+Requests only `identify`, plus `email` if `includeEmail` is enabled.
+
+Use this for the smallest possible identity flow.
+
+### `/authorize/email`
+
+Alias for the normal email-capable flow.
+
+If `includeEmail` is disabled, this behaves like `/authorize/identify`.
+
+### `/authorize/guilds`
+
+Adds the `guilds` scope so the worker can emit the `guilds` claim.
+
+### `/authorize/roles`
+
+Adds `guilds.members.read` so the worker can attempt role lookups through the user token when not using the cache path.
+
+## Role Modes
+
+### Cached roles
+
+Recommended when possible.
+
+- Set `cacheRoles` to `true`
+- Configure `serversToCheckRolesFor`
+- Add `DISCORD_TOKEN` as a Worker secret
+- Invite the bot to every configured guild
+
+The worker's scheduled handler refreshes role membership into KV every hour. During login, the token endpoint reads from KV instead of querying Discord live for each role lookup.
+
+### Live role lookup with user token
+
+Use `/authorize/roles` and set `cacheRoles` to `false`.
+
+This uses Discord's `guilds.members.read` scope and can hit rate limits more easily.
+
+### Live role lookup with bot token
+
+Use `/authorize/guilds`, set `cacheRoles` to `false`, and configure `DISCORD_TOKEN`.
+
+This fetches member roles through the bot for guilds the user belongs to.
+
+## Local Development
+
+Start the worker with:
+
+```bash
+npm run start
+```
+
+Example authorize URL:
+
+```txt
+http://127.0.0.1:8787/authorize/guilds?client_id=YOUR_CLIENT_ID&redirect_uri=https://YOURNAME.cloudflareaccess.com/cdn-cgi/access/callback&state=test
+```
+
+If you forget `client_id`, the worker will correctly return `Bad request.` like a tiny gatekeeping gremlin.
+
+## Useful Scripts
+
+```bash
+npm run start
+npm run typecheck
+npm run cf-typegen
+```
+
+## Notes
+
+- The worker currently reads `clientSecret` from `config.json` because that matches the existing project shape.
+- `worker-configuration.d.ts` is generated by Wrangler via `npm run cf-typegen`.
+- After changing `wrangler.toml`, rerun `npm run cf-typegen`.
+
+## Credit
+
+- Original project and core idea by [Erisa](https://github.com/Erisa/discord-oidc-worker)
+- Additional inspiration from [kimcore/discord-oidc](https://github.com/kimcore/discord-oidc)
+- Additional inspiration from [eidam/cf-access-workers-oidc](https://github.com/eidam/cf-access-workers-oidc)

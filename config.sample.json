@@ -4,6 +4,8 @@
     "redirectUrls": [
         "https://YOURNAME.cloudflareaccess.com/cdn-cgi/access/callback"
     ],
+    "includeEmail": true,
+    "fallbackEmail": "oauth@discord.com",
     "serversToCheckRolesFor": [
         
     ],
