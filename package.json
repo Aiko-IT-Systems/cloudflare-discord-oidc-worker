@@ -42,9 +42,9 @@
   "dependencies": {
     "hono": "4.12.10",
     "jose": "6.2.2",
-    "wrangler": "4.80.0"
+    "wrangler": "4.84.1"
   },
   "devDependencies": {
-    "typescript": "6.0.2"
+    "typescript": "6.0.3"
   }
 }
