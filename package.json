@@ -41,7 +41,7 @@
   ],
   "dependencies": {
     "hono": "4.13.3",
-    "jose": "6.2.9",
+    "jose": "6.2.10",
     "wrangler": "4.125.0"
   },
   "devDependencies": {
