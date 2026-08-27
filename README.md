@@ -201,6 +201,7 @@ Recommended when possible.
 - Configure `serversToCheckRolesFor`
 - Add `DISCORD_TOKEN` as a Worker secret
 - Invite the bot to every configured guild
+- MAKE SURE THE `GUILD_MEMBERS` INTENT IS ENABLED FOR THE BOT!!!
 
 The worker's scheduled handler refreshes role membership into KV every hour. During login, the token endpoint reads from KV instead of querying Discord live for each role lookup.
 
