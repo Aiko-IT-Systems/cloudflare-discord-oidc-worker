@@ -40,9 +40,9 @@
     }
   ],
   "dependencies": {
-    "hono": "4.13.9",
+    "hono": "4.13.11",
     "jose": "6.2.12",
-    "wrangler": "4.139.0"
+    "wrangler": "4.144.0"
   },
   "devDependencies": {
     "typescript": "7.0.2"
