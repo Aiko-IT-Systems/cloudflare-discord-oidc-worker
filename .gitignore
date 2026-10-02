@@ -11,6 +11,5 @@ wrangler.local-login.jsonc
 /.cloudflare
 wrangler.generated.jsonc
 worker-bindings.d.ts
-worker-secrets.d.ts
 worker-env.d.ts
 worker-configuration.d.ts

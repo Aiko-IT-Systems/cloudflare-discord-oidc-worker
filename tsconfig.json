@@ -20,7 +20,6 @@
   },
   "include": [
     "src/**/*.ts",
-    "worker-secrets.d.ts",
     "worker-bindings.d.ts",
     "worker-configuration.d.ts",
     "tests/**/*.test.ts"
