@@ -4,6 +4,7 @@
   "description": "Discord OIDC Provider for Cloudflare Access powered by Cloudflare Workers with full PKCE support, role caching, and more.",
   "main": "src/index.ts",
   "scripts": {
+    "build": "npm ci && npm run generate:types && npm run typecheck",
     "start": "node scripts/run-wrangler.mjs dev",
     "deploy": "node scripts/run-wrangler.mjs deploy",
     "wrangler": "node scripts/run-wrangler.mjs",
@@ -14,7 +15,7 @@
     "setup": "node scripts/setup.mjs",
     "test": "vitest run --config vitest.config.mts",
     "test:local": "node scripts/local-access-login.mjs",
-    "typecheck": "npm run generate:types && tsc --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "author": {
     "name": "Lala Sabathil",

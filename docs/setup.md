@@ -155,10 +155,11 @@ Workers Builds can deploy changes pushed to a branch in your fork:
 1. In Cloudflare, open **Workers & Pages**, select your Worker, then open **Settings → Build** and connect your GitHub account.
 2. Select your fork and repository, then choose the production branch for this Worker. Every push to that branch can deploy to the selected Worker, so use a feature branch only when you intend to deploy it there.
 3. Set the project root to `/`.
-4. Set **Build command** to `npm run typecheck`. This generates profile-specific Wrangler types and checks the TypeScript. Wrangler bundles the Worker during deployment; there is no separate `npm run build` script.
+4. Set **Build command** to `npm run build`. This generates profile-specific Wrangler types and checks the TypeScript. Wrangler bundles the Worker during deployment; there is no separate `npm run build` script.
 5. Set **Deploy command** to `npm run deploy`. This generates the merged Wrangler config before deploying. Do not use `npx wrangler deploy` directly, because it skips profile selection.
 6. Clear the **Preview command** and leave **Enable Preview builds** off. The preview URL setting in Wrangler does not disable Workers Builds preview deployments.
-7. After connecting the repository, open **Settings → Build → Build cache** and select **Enable**. Cloudflare caches npm dependencies between builds; this is separate from the Worker’s KV or D1 role cache.
+7. Add the build variable `SKIP_DEPENDENCY_INSTALL` with the value `1` in **Variables and secrets**. This ensures that the Worker is bundled for production and that the Discord library does not log debug messages.
+8. After connecting the repository, open **Settings → Build → Build cache** and select **Enable**. Cloudflare caches npm dependencies between builds; this is separate from the Worker’s KV or D1 role cache.
 
 Before the first build, put your install-specific settings in `wrangler.user.jsonc` and add the runtime secrets to the Worker. Workers Builds does not read your local `.dev.vars` or `.secrets` files. Keep the Worker name and account, route, and binding IDs in the selected profile pointed at the resources you intend to update.
 
