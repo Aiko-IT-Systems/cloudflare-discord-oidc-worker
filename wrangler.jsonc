@@ -1,0 +1,52 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "discord-oidc",
+	"main": "src/index.ts",
+	"minify": true,
+	"keep_names": true,
+	"secrets": {
+		"required": [
+			"DISCORD_CLIENT_SECRET",
+			"OIDC_SIGNING_PRIVATE_JWK"
+		]
+	},
+	"compatibility_date": "2026-03-11",
+	"observability": {
+		"enabled": true,
+		"logs": {
+			"enabled": true
+		},
+		"traces": {
+			"enabled": true,
+			"head_sampling_rate": 0.1
+		}
+	},
+	"kv_namespaces": [
+		{
+			"binding": "KV"
+		}
+	],
+	"triggers": {
+		"crons": [
+			"0 * * * *"
+		]
+	},
+	"vars": {
+		"ROLE_SOURCE": "cache",
+		"CACHE_BACKEND": "kv",
+		"INCLUDE_EMAIL": "true",
+		"FALLBACK_EMAIL": "oauth@discord.com",
+		"OIDC_RETIRING_PUBLIC_KEYS": "[]"
+	},
+	"placement": {
+		"mode": "smart"
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "discord-oidc",
+			"migrations_dir": "migrations"
+		}
+	],
+	"preview_urls": false
+}

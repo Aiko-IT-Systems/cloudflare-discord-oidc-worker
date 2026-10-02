@@ -3,3 +3,14 @@ config.json
 package-lock.json
 wrangler.toml
 .wrangler/
+.secrets/
+.dev.vars*
+!.dev.vars.example
+wrangler.local-login.jsonc
+.tmp*
+/.cloudflare
+wrangler.generated.jsonc
+worker-bindings.d.ts
+worker-secrets.d.ts
+worker-env.d.ts
+worker-configuration.d.ts

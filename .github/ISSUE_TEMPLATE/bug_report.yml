@@ -1,0 +1,41 @@
+name: Bug report
+description: Report something that is broken.
+type: bug
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        For setup help, use the [AITSYS Discord server](https://discord.gg/RXA6u3jxdU).
+        Do not include client secrets, bot tokens, signing keys, access tokens, or other credentials.
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Describe the problem and what you expected to happen.
+      placeholder: When I ..., I expected ..., but ... happened.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How can we reproduce it?
+      description: List the steps, URLs (without credentials), or configuration needed to see the problem.
+      placeholder: |
+        1. Configure ...
+        2. Open ...
+        3. See ...
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Which release or commit are you using?
+      placeholder: e.g. 1.2.3
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Remove tokens, secrets, user data, and other private information before posting.
+      render: text

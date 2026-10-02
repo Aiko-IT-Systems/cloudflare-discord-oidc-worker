@@ -1,0 +1,30 @@
+name: Feature request
+description: Suggest an improvement or new capability.
+type: feature
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        For setup questions, use the [AITSYS Discord server](https://discord.gg/RXA6u3jxdU).
+  - type: textarea
+    id: problem
+    attributes:
+      label: What do you want to do?
+      description: Explain what is difficult or missing today.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: What would you like to happen?
+      description: Describe the change that would help you.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Other solutions you considered
+      description: Optional. Mention any workaround or alternative you have tried.

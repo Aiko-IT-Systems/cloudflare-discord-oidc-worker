@@ -1,19 +1,30 @@
 {
   "name": "discord-oidc-worker",
-  "version": "4.0.1",
-  "description": "Discord OIDC Wrapper in CF Workers with roles support",
-  "main": "worker.ts",
+  "version": "5.0.0",
+  "description": "Discord OIDC Provider for Cloudflare Access powered by Cloudflare Workers with full PKCE support, role caching, and more.",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "wrangler dev",
-    "typecheck": "tsc --noEmit",
-    "cf-typegen": "wrangler types"
+    "start": "node scripts/run-wrangler.mjs dev",
+    "deploy": "node scripts/run-wrangler.mjs deploy",
+    "wrangler": "node scripts/run-wrangler.mjs",
+    "cf-typegen": "node scripts/run-wrangler.mjs types worker-bindings.d.ts --include-runtime=false",
+    "generate:wrangler-config": "node scripts/generate-worker-config.mjs",
+    "generate:types": "npm run wrangler -- types worker-configuration.d.ts && npm run cf-typegen",
+    "generate:signing-key": "node scripts/generate-signing-key.mjs",
+    "setup": "node scripts/setup.mjs",
+    "test": "vitest run --config vitest.config.mts",
+    "test:local": "node scripts/local-access-login.mjs",
+    "typecheck": "npm run generate:types && tsc --noEmit"
   },
-  "author": "Erisa A <erisa@erisa.uk>",
+  "author": {
+    "name": "Lala Sabathil",
+    "email": "aiko@aitsys.dev",
+    "url": "https://github.com/Lulalaby"
+  },
   "contributors": [
     {
-      "name": "Lala Sabathil",
-      "email": "aiko@aitsys.dev",
-      "url": "https://github.com/Lulalaby"
+      "name": "Erisa A",
+      "email": "erisa@erisa.uk"
     }
   ],
   "bugs": {
@@ -28,7 +39,7 @@
   "funding": [
     {
       "type": "github",
-      "url": "https://github.com/sponsors/Erisa"
+      "url": "https://github.com/sponsors/Lulalaby"
     },
     {
       "type": "github",
@@ -42,9 +53,15 @@
   "dependencies": {
     "hono": "4.13.12",
     "jose": "6.2.12",
-    "wrangler": "4.145.0"
+    "wrangler": "4.147.0"
   },
   "devDependencies": {
-    "typescript": "7.0.2"
+    "cf": "1.0.0-beta.11",
+    "typescript": "7.0.2",
+    "vitest": "5.0.3"
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "workerd": true
   }
 }

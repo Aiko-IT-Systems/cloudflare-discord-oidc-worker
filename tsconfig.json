@@ -4,19 +4,25 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "lib": ["ES2022", "WebWorker"],
+    "lib": [
+      "ES2022",
+      "WebWorker"
+    ],
     "strict": true,
     "noEmit": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "types": ["./worker-configuration.d.ts"]
+    "types": [
+      "./worker-configuration.d.ts"
+    ]
   },
   "include": [
-    "worker.ts",
-    "worker-env.d.ts",
+    "src/**/*.ts",
+    "worker-secrets.d.ts",
+    "worker-bindings.d.ts",
     "worker-configuration.d.ts",
-    "config.json"
+    "tests/**/*.test.ts"
   ]
 }

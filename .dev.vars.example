@@ -1,0 +1,21 @@
+# Copy to .dev.vars.local-login and fill in the Discord OAuth application values.
+CLIENT_ID=000000000000000000
+DISCORD_CLIENT_SECRET=replace-with-discord-oauth-client-secret
+# Leave blank to generate a local signing key on first run.
+OIDC_SIGNING_PRIVATE_JWK=
+
+# Local integration test switches.
+# TEST_MODE: identify, email, guilds, or roles
+TEST_MODE=identify
+# TEST_ROLE_SOURCE: cache, user, or bot
+TEST_ROLE_SOURCE=cache
+# TEST_BACKEND: kv or d1 (D1 migrations are applied to local Wrangler storage)
+TEST_BACKEND=kv
+# Set the Discord guild whose actual membership/roles you want to test.
+TEST_GUILD_ID=
+# Required for bot role lookup and scheduled cache refreshes. Invite this bot
+# to TEST_GUILD_ID and enable the Server Members Intent in the bot settings.
+DISCORD_TOKEN=
+# Set false if you do not want to request/include the Discord email scope.
+TEST_INCLUDE_EMAIL=true
+TEST_FALLBACK_EMAIL=oauth@discord.com

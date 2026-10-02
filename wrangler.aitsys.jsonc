@@ -1,0 +1,35 @@
+{
+	"kv_namespaces": [
+		{
+			"binding": "KV",
+			"id": "107e83c8df164c02ba47508d8f87782c"
+		}
+	],
+	"vars": {
+		"CLIENT_ID": "1056068924447412224",
+		"ISSUER": "https://discord-auth.aitsys.dev",
+		"REDIRECT_URIS": "[\"https://aitsys.cloudflareaccess.com/cdn-cgi/access/callback\"]",
+		"ROLE_GUILD_IDS": "[\"858089281214087179\",\"881207955029110855\",\"858089274087309313\",\"930576005096144928\"]",
+		"ROLE_SOURCE": "cache",
+		"INCLUDE_EMAIL": "true",
+		"CACHE_BACKEND": "d1"
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "discord-oidc",
+			"migrations_dir": "migrations",
+			"database_id": "4722cf0f-9866-483f-8227-9f06ab83964f"
+		}
+	],
+	"account_id": "ba6a46b16b99f5f74858beafc22187c7",
+	"workers_dev": false,
+	"routes": [
+		{
+			"pattern": "discord-auth.aitsys.dev",
+			"custom_domain": true,
+			"zone_id": "e9e86e9cc4298b9666b01b5cd3795099",
+			"previews_enabled": false
+		}
+	]
+}
