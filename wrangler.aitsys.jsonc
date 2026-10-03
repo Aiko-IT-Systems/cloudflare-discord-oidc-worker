@@ -8,7 +8,7 @@
 	"vars": {
 		"CLIENT_ID": "1056068924447412224",
 		"ISSUER": "https://discord-auth.aitsys.dev",
-		"REDIRECT_URIS": "[\"https://aitsys.cloudflareaccess.com/cdn-cgi/access/callback\"]",
+		"REDIRECT_URIS": "[\"https://aitsys.cloudflareaccess.com/cdn-cgi/access/callback\",\"https://files.aitsys.dev/api/auth/oidc/callback\"]",
 		"ROLE_GUILD_IDS": "[\"858089281214087179\",\"881207955029110855\",\"858089274087309313\",\"930576005096144928\"]",
 		"ROLE_SOURCE": "cache",
 		"INCLUDE_EMAIL": "true",
