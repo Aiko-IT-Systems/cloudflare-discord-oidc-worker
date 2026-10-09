@@ -55,10 +55,10 @@
   "dependencies": {
     "hono": "4.13.13",
     "jose": "6.2.12",
-    "wrangler": "4.148.0"
+    "wrangler": "4.149.0"
   },
   "devDependencies": {
-    "cf": "1.0.0-beta.13",
+    "cf": "1.0.0-beta.14",
     "typescript": "7.0.2",
     "vitest": "5.0.3"
   },
