@@ -55,7 +55,7 @@
   "dependencies": {
     "hono": "4.13.16",
     "jose": "6.2.15",
-    "wrangler": "4.157.0"
+    "wrangler": "4.158.0"
   },
   "devDependencies": {
     "cf": "1.0.0-beta.27",
