@@ -22,7 +22,7 @@
     "email": "aiko@aitsys.dev",
     "url": "https://github.com/Lulalaby"
   },
-  "packageManager": "npm@11.21.1",
+  "packageManager": "npm@11.21.2",
   "contributors": [
     {
       "name": "Erisa A",
@@ -53,14 +53,14 @@
     }
   ],
   "dependencies": {
-    "hono": "4.13.14",
-    "jose": "6.2.13",
-    "wrangler": "4.154.0"
+    "hono": "4.13.16",
+    "jose": "6.2.15",
+    "wrangler": "4.157.0"
   },
   "devDependencies": {
-    "cf": "1.0.0-beta.24",
+    "cf": "1.0.0-beta.27",
     "typescript": "7.0.2",
-    "vitest": "5.0.5"
+    "vitest": "5.1.0"
   },
   "allowScripts": {
     "esbuild": true,
