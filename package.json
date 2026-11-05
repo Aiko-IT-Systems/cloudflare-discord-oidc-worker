@@ -58,7 +58,7 @@
     "wrangler": "4.158.0"
   },
   "devDependencies": {
-    "cf": "1.0.0-beta.27",
+    "cf": "1.0.0-beta.28",
     "typescript": "7.0.2",
     "vitest": "5.1.0"
   },
