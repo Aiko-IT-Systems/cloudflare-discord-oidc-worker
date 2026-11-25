@@ -53,14 +53,14 @@
     }
   ],
   "dependencies": {
-    "hono": "4.13.20",
+    "hono": "4.13.22",
     "jose": "6.2.18",
-    "wrangler": "4.166.0"
+    "wrangler": "4.168.0"
   },
   "devDependencies": {
-    "cf": "1.0.0-rc.2",
+    "cf": "1.0.0-rc.6",
     "typescript": "7.0.2",
-    "vitest": "5.1.1"
+    "vitest": "5.1.2"
   },
   "allowScripts": {
     "esbuild": true,
