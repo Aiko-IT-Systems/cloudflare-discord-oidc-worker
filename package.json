@@ -53,9 +53,9 @@
     }
   ],
   "dependencies": {
-    "hono": "4.13.22",
+    "hono": "4.13.23",
     "jose": "6.2.18",
-    "wrangler": "4.168.0"
+    "wrangler": "4.169.0"
   },
   "devDependencies": {
     "cf": "1.0.0-rc.6",
